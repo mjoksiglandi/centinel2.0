@@ -114,22 +114,22 @@ def generate_launch_description():
 
         Node(
             condition=LaunchConfigurationEquals('sensor', 'rplidar'),
-            name='sllidar_node',
-            package='sllidar_ros2',
-            executable='sllidar_node',
+            name='rplidar_composition',
+            package='rplidar_ros',
+            executable='rplidar_composition',
             output='screen',
             remappings=[('scan', LaunchConfiguration('topic_name'))],
-             parameters=[{'channel_type': channel_type, 
-                         'udp_ip': udp_ip,
-                         'udp_port': udp_port,
-                         'frame_id': LaunchConfiguration('frame_id'),
-                         'inverted': inverted, 
-                         'angle_compensate': angle_compensate, 
-                         'scan_mode': scan_mode}]
+            parameters=[{
+                'serial_port': '/dev/ttyUSB0',
+                'serial_baudrate': 115200,  # A1 / A2
+                'frame_id': LaunchConfiguration('frame_id'),
+                'inverted': False,
+                'angle_compensate': True,
+            }],
         ),
         
-         Node(
-         condition=LaunchConfigurationEquals('sensor', 'sllidar'),
+        Node(
+            condition=LaunchConfigurationEquals('sensor', 'sllidar'),
             name='sllidar_node',
             package='sllidar_ros2',
             executable='sllidar_node',
@@ -158,7 +158,6 @@ def generate_launch_description():
                 'firmware_version': 2
             }],
         ),
-    
 
         Node(
             condition=LaunchConfigurationEquals('sensor', 'ldlidar'),
